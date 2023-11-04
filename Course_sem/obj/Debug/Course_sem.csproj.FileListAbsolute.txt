@@ -1,0 +1,6 @@
+/home/olga/RiderProjects/Course_sem/Course_sem/bin/Debug/Course_sem.exe
+/home/olga/RiderProjects/Course_sem/Course_sem/bin/Debug/Course_sem.pdb
+/home/olga/RiderProjects/Course_sem/Course_sem/obj/Debug/Course_sem.csproj.AssemblyReference.cache
+/home/olga/RiderProjects/Course_sem/Course_sem/obj/Debug/Course_sem.csproj.CoreCompileInputs.cache
+/home/olga/RiderProjects/Course_sem/Course_sem/obj/Debug/Course_sem.exe
+/home/olga/RiderProjects/Course_sem/Course_sem/obj/Debug/Course_sem.pdb
