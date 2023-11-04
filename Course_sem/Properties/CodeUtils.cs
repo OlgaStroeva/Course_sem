@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Course_sem.Properties
 {
@@ -7,6 +9,19 @@ namespace Course_sem.Properties
     // The IsCorrectId function remains the same as well.
     public static class CodeUtils
     {
+        
+        public static Queue<string> SplitCodeIntoWords(string code)
+        {
+            // Define a regular expression pattern to split the code based on space, comma, semicolon, parentheses, operators, "read," and comments.
+            string pattern = @"(/\*[^*]*\*+(?:[^/*][^*]*\*+)*/)|\s+|(?<=[;,()=<>+\-*/])|(?=[;,()=<>+\-*/])|(?<=read)|(?=read)";
+            // Split the code using the regular expression pattern.
+            var words = Regex.Split(code, pattern)
+                .Where(word => !string.IsNullOrWhiteSpace(word) && !word.StartsWith("/*"))
+                .Select(word => word.Trim()) // Remove leading/trailing spaces.
+                .ToList();
+            return new Queue<string>(words);
+        }
+        
         public static bool IsCorrectId(string word)
         {
             if (word.Length >= 3 && IsLetter(word[0]) && IsLetter(word[1]))

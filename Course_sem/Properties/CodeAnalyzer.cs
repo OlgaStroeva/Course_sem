@@ -29,21 +29,7 @@ namespace Course_sem.Properties
 
         public CodeAnalyzer(string code)
         {
-            // Constructor: Initialize the class with the input code.
-            // Split the code into words and process them.
             words = SplitCodeIntoWords(code + ';');
-        }
-        
-        private Queue<string> SplitCodeIntoWords(string code)
-        {
-            // Define a regular expression pattern to split the code based on space, comma, semicolon, parentheses, operators, "read," and comments.
-            string pattern = @"(/\*[^*]*\*+(?:[^/*][^*]*\*+)*/)|\s+|(?<=[;,()=<>+\-*/])|(?=[;,()=<>+\-*/])|(?<=read)|(?=read)";
-            // Split the code using the regular expression pattern.
-            var words = Regex.Split(code, pattern)
-                .Where(word => !string.IsNullOrWhiteSpace(word) && !word.StartsWith("/*"))
-                .Select(word => word.Trim()) // Remove leading/trailing spaces.
-                .ToList();
-            return new Queue<string>(words);
         }
         
         public bool AnalyzeCode()
