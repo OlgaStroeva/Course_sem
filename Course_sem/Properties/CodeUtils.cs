@@ -56,7 +56,8 @@ namespace Course_sem.Properties
 
         public static bool IsKeyword(string word)
         {
-            var keywords = new HashSet<string> { "dim", "begin", "end", "for", "if", "elseif", "else", "endif", "step", "next", "when", "read", "output", "%", "!", "$" };
+            var keywords = new HashSet<string> { "dim", "ass", "to", "begin", "end", "for", "if", "elseif",
+                "else", "endif", "step", "next", "when", "read", "output", "%", "!", "$" };
             return keywords.Contains(word);
         }
 

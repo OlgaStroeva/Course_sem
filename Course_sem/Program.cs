@@ -12,14 +12,14 @@ namespace Course_sem
         {
             dim aa1, bb2, cc3 %;
             /* kottt */
-            if (aa1 > 0) begin
+            /*if (aa1 > 0)*/ begin
                 aa1 ass (aa1 - 1) * cc3;
                 bb2 ass bb2;
             end;
             elseif(aa1>bb2)
                 aa1 ass (aa1 - bb2);
             elseif (aa1<bb2)
-                bb2 ass aa1 + 10;
+                bc2 ass aa1 + 10;
             else
                 aa1 ass 1;
             endif;

@@ -14,7 +14,7 @@ namespace Course_sem.Properties
         private HashSet<string> set = new HashSet<string>()
         {
             "{}", "dimIDtype", "dimIdtype", "beginend", "Idassexpress", "IdassId", "if(express)endif", "if(Id)endif",
-            "forIdtoexpressnext", "forIDtoIDnext", "whenexpressdo", "read(ID)", "output(express)"
+            "forIdtoexpressnext", "forIDtoIDnext", "whenexpressdo", "whenIddo","read(ID)", "output(express)"
         };
         
         readonly private HashSet<string> keys = new HashSet<string>()
@@ -30,6 +30,7 @@ namespace Course_sem.Properties
         public CodeAnalyzer(string code)
         {
             words = SplitCodeIntoWords(code + ';');
+            var wow = new Semantical(words);
         }
         
         public bool AnalyzeCode()
@@ -57,7 +58,7 @@ namespace Course_sem.Properties
                     }
                 } 
                 //else if (keywords.Contains(word)) SpecialCase(word);
-                
+                else Console.WriteLine("You wrote something strange!");
             }
             return wordStack.Count == 0;
         }
@@ -125,16 +126,15 @@ namespace Course_sem.Properties
                 temp = wordStack.Pop() + temp;
             if (wordStack.Peek() == "elseif")
             {
-                while (!keys.Contains(wordStack.Peek()))
+                while (!keys.Contains(wordStack.Peek()) && wordStack.Count > 1)
                 {
                     temp = wordStack.Pop() + temp;
                 }
             }
-            temp = wordStack.Pop() + temp;
-            Console.WriteLine(temp);
+            if(wordStack.Peek() == "if") temp = wordStack.Pop() + temp;
             string readRegex = @"read\((?:Id)+\)",
                 outputRegex = @"output\((?:(?:Id|express)+)\)";
-            string ifRegex = @"if\(\w+\)(?:elseif\(\w+\))*(?:else)?endif";
+            string ifRegex = @"if\(\w+\)(?:elseif\(\w+\))*(?:else(?!if)\w+)?endif";
             return Regex.IsMatch(temp, outputRegex) 
                    || Regex.IsMatch(temp, readRegex)
                    || Regex.IsMatch(temp, ifRegex);
