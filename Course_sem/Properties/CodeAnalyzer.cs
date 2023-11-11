@@ -14,7 +14,7 @@ namespace Course_sem.Properties
         private HashSet<string> set = new HashSet<string>()
         {
             "{}", "dimIDtype", "dimIdtype", "beginend", "Idassexpress", "IdassId", "if(express)endif", "if(Id)endif",
-            "forIdtoexpressnext", "forIDtoIDnext", "whenexpressdo", "whenIddo","read(ID)", "output(express)"
+            "forIdtoexpressnext", "forIDtoIDnext", "whenexpressdo", "whenIddo","read(ID)", "read(Id)", "output(express)"
         };
         
         readonly private HashSet<string> keys = new HashSet<string>()
@@ -25,7 +25,7 @@ namespace Course_sem.Properties
 
         private readonly Dictionary<string, int> constructionTemplates = new Dictionary<string, int>
             {{"{", 2}, {"dim", 3}, {"begin", 2}, {"ass", 3}, {"if", 5}, {"for", 5}, {"when", 3},
-                {"read", 0}, {"output", 0} };
+                {"read", 4}, {"output", 0} };
 
         public CodeAnalyzer(string code)
         {
@@ -36,6 +36,7 @@ namespace Course_sem.Properties
         public bool AnalyzeCode()
         {
             string word;
+            if (words.Peek() != "{") return false;
             while(words.Count != 0)
             {
                 word = words.Dequeue();
@@ -56,9 +57,13 @@ namespace Course_sem.Properties
                     {
                         // ignored
                     }
-                } 
+                }
                 //else if (keywords.Contains(word)) SpecialCase(word);
-                else Console.WriteLine("You wrote something strange!");
+                else
+                {
+                    Console.WriteLine("You write something strange!");
+                    throw new Exception();
+                }
             }
             return wordStack.Count == 0;
         }
@@ -68,7 +73,6 @@ namespace Course_sem.Properties
         {
             var typeOfExpression = 0;// this var means "how construction should look like" (so it's impossible if there is something like '1+1, 2+2'
             Stack<string> tmp = new Stack<string>();
-            //if (word == "(") tmp.Push("(");
             string nextOne = words.Peek(), result = "Id"; //result var display, which world will we return
             if (IsOperator(nextOne) || word == "(") //if it's expression (so there is any operator, after ID or constant var word)
                 typeOfExpression = 1;
@@ -131,12 +135,12 @@ namespace Course_sem.Properties
                     temp = wordStack.Pop() + temp;
                 }
             }
-            if(wordStack.Peek() == "if") temp = wordStack.Pop() + temp;
-            string readRegex = @"read\((?:Id)+\)",
+            if(!IsSeparator(wordStack.Peek())) temp = wordStack.Pop() + temp;
+            string
                 outputRegex = @"output\((?:(?:Id|express)+)\)";
-            string ifRegex = @"if\(\w+\)(?:elseif\(\w+\))*(?:else(?!if)\w+)?endif";
+            string ifRegex = @"if\(\w+\)(?:elseif\(\w+\))*(?:else(?!if)[\w.]*)?endif";
             return Regex.IsMatch(temp, outputRegex) 
-                   || Regex.IsMatch(temp, readRegex)
+                   
                    || Regex.IsMatch(temp, ifRegex);
         }
         

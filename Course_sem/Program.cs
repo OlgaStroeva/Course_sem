@@ -12,7 +12,7 @@ namespace Course_sem
         {
             dim aa1, bb2, cc3 %;
             /* kottt */
-            /*if (aa1 > 0)*/ begin
+            if (aa1 > 0) begin
                 aa1 ass (aa1 - 1) * cc3;
                 bb2 ass bb2;
             end;
@@ -26,7 +26,7 @@ namespace Course_sem
             for aa1 to (aa1 > 10) step 1
                 bb2 ass ((-7) + (bb2 *bb2));
             next;
-            read(aa1 bb2);
+            read(aa1, bb2);
             output(aa1+bb2);
         }
         ";
