@@ -61,7 +61,7 @@ namespace Course_sem.Properties
                 //else if (keywords.Contains(word)) SpecialCase(word);
                 else
                 {
-                    Console.WriteLine("You write something strange!");
+                    Console.WriteLine("You write something strange!" + word);
                     throw new Exception();
                 }
             }
@@ -136,11 +136,9 @@ namespace Course_sem.Properties
                 }
             }
             if(!IsSeparator(wordStack.Peek())) temp = wordStack.Pop() + temp;
-            string
-                outputRegex = @"output\((?:(?:Id|express)+)\)";
+            string outputRegex = @"output\((?:(?:Id|express)+)\)";
             string ifRegex = @"if\(\w+\)(?:elseif\(\w+\))*(?:else(?!if)[\w.]*)?endif";
             return Regex.IsMatch(temp, outputRegex) 
-                   
                    || Regex.IsMatch(temp, ifRegex);
         }
         

@@ -45,6 +45,7 @@
         <Compile Include="Properties\CodeAnalyzer.cs" />
         <Compile Include="Properties\CodeUtils.cs" />
         <Compile Include="Properties\LexicalAnalyze.cs" />
+        <Compile Include="Properties\representation.cs" />
         <Compile Include="Properties\Semantical.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>

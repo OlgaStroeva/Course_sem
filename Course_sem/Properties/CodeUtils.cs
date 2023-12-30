@@ -50,7 +50,7 @@ namespace Course_sem.Properties
 
         public static bool IsOperator(string word)
         {
-            string[] operatorPatterns = { "+", "-", "*", "/", "=", "<", ">", "<=", ">=", "==", "!=", "&", "|" };
+            string[] operatorPatterns = { "no", "+", "-", "*", "/", "=", "<", ">", "<=", ">=", "==", "!=", "&", "|" };
             return Array.Exists(operatorPatterns, pattern => pattern == word);
         }
 

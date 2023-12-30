@@ -19,7 +19,7 @@ namespace Course_sem
             elseif(aa1>bb2)
                 aa1 ass (aa1 - bb2);
             elseif (aa1<bb2)
-                bc2 ass aa1 + 10;
+                bb2 ass aa1 + 10;
             else
                 aa1 ass 1;
             endif;
