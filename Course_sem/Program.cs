@@ -23,7 +23,7 @@ namespace Course_sem
             else
                 aa1 ass 1;
             endif;
-            for aa1 to (aa1 > 10) step 1
+            for aa1 ass 10; to (aa1 > 10) step 1
                 bb2 ass ((-7) + (bb2 *bb2));
             next;
             read(aa1, bb2);
@@ -31,13 +31,9 @@ namespace Course_sem
         }
         ";
 
-            CodeAnalyzer analyzer = new CodeAnalyzer(codeToAnalyze);
+            representation output = new representation(codeToAnalyze);
+            output.getData();
 
-            Console.WriteLine("Analysis Result:");
-            Console.WriteLine("---------------");
-            if(analyzer.AnalyzeCode()) Console.WriteLine("You did a great job! Good for you, continue working)");
-            else Console.WriteLine("You're a good kitten. Work harder, be better");
-            
         }
     }
     

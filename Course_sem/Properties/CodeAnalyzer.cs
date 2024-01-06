@@ -9,34 +9,39 @@ namespace Course_sem.Properties
     internal class CodeAnalyzer
     {
         private Queue<string> words;
-        private Stack<string> wordStack = new Stack<string>();
+        private Stack<string> wordStack = new Stack<string>(), 
+            Identifify = new Stack<string>(),
+            expressions = new Stack<string>();
         private Stack<int> numberOfWords = new Stack<int>();
         private HashSet<string> set = new HashSet<string>()
         {
             "{}", "dimIDtype", "dimIdtype", "beginend", "Idassexpress", "IdassId", "if(express)endif", "if(Id)endif",
-            "forIdtoexpressnext", "forIDtoIDnext", "whenexpressdo", "whenIddo","read(ID)", "read(Id)", "output(express)"
+            "fortoexpressnext", "fortoexpressstepIdnext", "forIdtoIdnext", "whenexpressdo", "whenIddo",
+            "read(ID)", "read(Id)", "output(express)", "output(Id)", "output(ID)"
         };
         
         readonly private HashSet<string> keys = new HashSet<string>()
         {
             "{", "}", "dim", "begin", "end", "if", "endif", "ass", "for",
-            "to", "next", "when", "do", "read", "output"
+            "to", "next", "when", "do", "read", "output", "step"
         }, types = new HashSet<string>() {"%", "$", "!" };
 
         private readonly Dictionary<string, int> constructionTemplates = new Dictionary<string, int>
-            {{"{", 2}, {"dim", 3}, {"begin", 2}, {"ass", 3}, {"if", 5}, {"for", 5}, {"when", 3},
+            {{"{", 2}, {"dim", 3}, {"begin", 2}, {"ass", 3}, {"if", 5}, {"for", 4}, {"when", 3},
                 {"read", 4}, {"output", 0} };
 
-        public CodeAnalyzer(string code)
+        public CodeAnalyzer(Queue<string> code)
         {
-            words = SplitCodeIntoWords(code + ';');
-            var wow = new Semantical(words);
+            words = code;  //SplitCodeIntoWords(code + ';');
+            //var wow = new Semantical(words);
         }
+
+        private string Result = ""; 
         
-        public bool AnalyzeCode()
+        public string AnalyzeCode()
         {
             string word;
-            if (words.Peek() != "{") return false;
+            if (words.Peek() != "{") return "I can't see where is your program. Didn't you forget about { ?";
             while(words.Count != 0)
             {
                 word = words.Dequeue();
@@ -45,7 +50,6 @@ namespace Course_sem.Properties
                 else if (IsConstantValue(word) || IsCorrectId(word) ||
                          (word=="(" && !bracket.Contains(wordStack.Peek())))
                     wordStack.Push(ProcessTheExpression(word));
-                else if (word == "step") words.Dequeue(); 
                 else if (keys.Contains(word) || IsKeyword(word) || IsSeparator(word))
                 {
                     wordStack.Push(word);
@@ -55,22 +59,30 @@ namespace Course_sem.Properties
                     }
                     catch (Exception e)
                     {
+                        if (word == "step")
+                        {
+                            numberOfWords.Push(numberOfWords.Pop() + 2);
+                            
+                        }
                         // ignored
                     }
                 }
                 //else if (keywords.Contains(word)) SpecialCase(word);
                 else
                 {
-                    Console.WriteLine("You write something strange!" + word);
-                    throw new Exception();
+                    return "You write something strange!" + word;
                 }
             }
-            return wordStack.Count == 0;
+
+            if (wordStack.Count == 0 && Result == "") return "Everything is correct!";
+            return Result;
+
         }
 
         
         private string ProcessTheExpression(string word) //add for negative numbers, only get '-'
         {
+            string REZ = word;
             var typeOfExpression = 0;// this var means "how construction should look like" (so it's impossible if there is something like '1+1, 2+2'
             Stack<string> tmp = new Stack<string>();
             string nextOne = words.Peek(), result = "Id"; //result var display, which world will we return
@@ -86,23 +98,43 @@ namespace Course_sem.Properties
                 while (((IsOperator(nextOne) || word == "(") && typeOfExpression==1)
                     || (nextOne == "," && typeOfExpression==2)) // = while match conditions for types
                 {
+                    REZ += " " + nextOne;
                     while (word == "(")
                     {
                         tmp.Push("(");
                         word = words.Dequeue();
+                        if(word == "-") REZ += " " + word + " " + words.Peek();
+                        else if (IsOperator(word))
+                        {
+                            REZ += " " + nextOne;
+                        }
+                        //Here is a problem!
                     }
+                    
                     nextOne = words.Dequeue(); // remove checked ',' or operator or ID from main queue
                     word = words.Dequeue(); //take new word (ID or constant)
-                    if(word == "-") word = words.Dequeue();
+                    
+                    
+                    if (nextOne == "-")
+                    {
+                        REZ += " " + nextOne + " " + word;
+                    }else if (IsOperator(nextOne) && !REZ.EndsWith(nextOne))
+                        REZ += " " + nextOne + " " + word;
+                    else REZ += " " + word;
                     while (words.Peek() == ")" && tmp.Count>0 && tmp.Peek() == "(")
                     {
+                        REZ += " )";
                         words.Dequeue();
                         tmp.Pop();
                     }
+                    
                     nextOne = words.Peek(); // peek ',' or operator or ID from main queue
                 }
                 if (typeOfExpression == 1) result = "express";
             }
+            if(typeOfExpression == 1) expressions.Push(REZ);
+            else Identifify.Push(REZ);
+            Console.WriteLine(REZ);
             return result;
         }
 
@@ -118,12 +150,18 @@ namespace Course_sem.Properties
             {
                 if (!LastChance(ref temp))
                 {
-                    Console.WriteLine("Incorrect construction " + temp + ". Fix it now or forever hold your peace!");
-                    throw new Exception();
+                    Result += "Incorrect construction " + temp + ". Fix it now or forever hold your peace!\n";
+                    return;
+                    
                 }
             }
+            else
+            {
+                //_assembler.TranslateFromCode(temp,wordStack,ref Identifify, ref expressions);
+            }
         }
-        
+
+        //private TranslateToAssembler _assembler = new TranslateToAssembler();
         private bool LastChance(ref string temp)
         {
             while (!IsKeyword(wordStack.Peek()))
