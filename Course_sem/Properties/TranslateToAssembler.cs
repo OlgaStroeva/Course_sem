@@ -96,7 +96,12 @@ namespace Course_sem.Properties
             string temp = "";
             if (line.StartsWith("if"))
             {
-                
+                int else_ex = (line.Length - 16) % 15 / 4, elseif = (line.Length - 16) / 15 + 1;
+                for (int I = 0; I < elseif; I++)
+                {
+                    temp = temp;
+                }
+
             }
             return "";
         }
