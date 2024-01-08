@@ -79,6 +79,11 @@ namespace Course_sem.Properties
 
         }
 
+        public string GetAssembleyRezult()
+        {
+            return _assembler.GetData();
+        }
+
         
         private string ProcessTheExpression(string word) //add for negative numbers, only get '-'
         {
@@ -134,7 +139,7 @@ namespace Course_sem.Properties
             }
             if(typeOfExpression == 1) expressions.Push(REZ);
             else Identifify.Push(REZ);
-            Console.WriteLine(REZ);
+            //Console.WriteLine(REZ);
             return result;
         }
 
@@ -153,15 +158,15 @@ namespace Course_sem.Properties
                     Result += "Incorrect construction " + temp + ". Fix it now or forever hold your peace!\n";
                     return;
                     
-                }
+                } else _assembler.TranslateFromCode(temp,wordStack,ref Identifify, ref expressions);
             }
             else
             {
-                //_assembler.TranslateFromCode(temp,wordStack,ref Identifify, ref expressions);
+                _assembler.TranslateFromCode(temp,wordStack,ref Identifify, ref expressions);
             }
         }
 
-        //private TranslateToAssembler _assembler = new TranslateToAssembler();
+        private TranslateToAssembler _assembler = new TranslateToAssembler();
         private bool LastChance(ref string temp)
         {
             while (!IsKeyword(wordStack.Peek()))

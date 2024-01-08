@@ -14,7 +14,7 @@ namespace Course_sem.Properties
         private List<string> separators = new List<string>(), constants = new List<string>();
         private HashSet<string> IDs = new HashSet<string>();
 
-        private string ResultSem, ResultSin, text;
+        private string ResultSem, ResultSin, text, assembleyInfo;
         
         public representation(string code)
         {
@@ -24,29 +24,31 @@ namespace Course_sem.Properties
             semantical.GetDataLex(ref keywords, ref separators, ref constants, ref IDs, ref text);
             ResultSem = semantical.GetSemanticalResult();
             ResultSin = analyzer.AnalyzeCode();
+            assembleyInfo = analyzer.GetAssembleyRezult();
         }
 
         public void getData()
         {
-            foreach (var token in keywords)
-            {
-                Console.WriteLine(token);
-            }
-            foreach (var token in separators)
-            {
-                Console.WriteLine(token);
-            }
-            foreach (var token in constants)
-            {
-                Console.WriteLine(token);
-            }
-            foreach (var token in IDs)
-            {
-                Console.WriteLine(token);
-            }
-            Console.WriteLine(ResultSem);
-            Console.WriteLine(ResultSin);
-            Console.WriteLine(text);
+            // foreach (var token in keywords)
+            // {
+            //     Console.WriteLine(token);
+            // }
+            // foreach (var token in separators)
+            // {
+            //     Console.WriteLine(token);
+            // }
+            // foreach (var token in constants)
+            // {
+            //     Console.WriteLine(token);
+            // }
+            // foreach (var token in IDs)
+            // {
+            //     Console.WriteLine(token);
+            // }
+            // Console.WriteLine(ResultSem);
+            // Console.WriteLine(ResultSin);
+            // Console.WriteLine(text);
+            Console.WriteLine(assembleyInfo);
         }
         
     }

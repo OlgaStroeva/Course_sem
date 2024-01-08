@@ -26,8 +26,6 @@ namespace Course_sem
             for aa1 ass 10; to (aa1 > 10) step 1
                 bb2 ass ((-7) + (bb2 *bb2));
             next;
-            read(aa1, bb2);
-            output(aa1+bb2);
         }
         ";
 
